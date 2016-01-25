@@ -1,16 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
-## COMMENTS TEST 01
+## R Programming for Data Science Week 2
+## - Caching the inverse of a matrix -
 
-## Write a short comment describing this function
+
+## Creates a list containing functions
+## to set and get both the matrix and its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    inv <- NULL
+    setmatrix <- function(y){
+        x <<- y
+        inv <<- NULL
+    }
+    getmatrix <- function() x
+    setinv <- function(inverse) inv <<- inverse
+    getinv <- function() inv
+    list(setmatrix = setmatrix, getmatrix = getmatrix,
+         setinv = setinv, getinv = getinv)
 }
 
 
-## Write a short comment describing this function
+## Returns the inverse of the matrix created with makeCacheMatrix,
+## if it already exists skips calculation and retrieves from cache
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    inv <- x$getinv()
+    if(!is.null(inv)){
+        message("Getting cached inverse")
+        return(inv)
+    }
+    data <- x$getmatrix()
+    inv <- solve(data, ...)
+    x$setinv(inv)
+    inv
 }
